@@ -16,6 +16,8 @@ spec:
     image: prom/prometheus
   - name: alertmanager-container
     image: prom/alertmanager
+  - name: node-exporter-container
+    image: prom/node-exporter
   - name: execjson-container
     image: tnaganawa/execjson
   - name: applconn-container
