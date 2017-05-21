@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sdcc-containers
+spec:
+  restartPolicy: Never 
+  containers:
+  - name: elasticsearch-container
+    image: elasticsearch
+  - name: kibana-container
+    image: kibana
+    env:
+      - name: "ELASTICSEARCH_URL"
+        value: "http://127.0.0.1:9200"
+  - name: prometheus-container
+    image: prom/prometheus
+  - name: alertmanager-container
+    image: prom/alertmanager
+  - name: execjson-container
+    image: tnaganawa/execjson
+  - name: applconn-container
+    image: tnaganawa/applconn
+  - name: open-pager-url-container
+    image: tnaganawa/open-pager-url
+  - name: jupyter-it-automation-container
+    image: tnaganawa/jupyter-it-automation-notebook
