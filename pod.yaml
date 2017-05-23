@@ -26,3 +26,5 @@ spec:
     image: tnaganawa/open-pager-url
   - name: jupyter-it-automation-container
     image: tnaganawa/jupyter-it-automation-notebook
+    command: ["/bin/bash"]
+    args: ["-c", "start-notebook.sh --NotebookApp.token='' --NotebookApp.disable_check_xsrf=True"]
