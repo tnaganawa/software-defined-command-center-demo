@@ -14,17 +14,41 @@ spec:
         value: "http://127.0.0.1:9200"
   - name: prometheus-container
     image: prom/prometheus
+    command: ["/bin/prometheus"]
+    args: ["-config.file=/tmp/config/prometheus.yml"]
+    volumeMounts:
+    - mountPath: /tmp/config
+      name: prometheus-volume
   - name: alertmanager-container
     image: prom/alertmanager
+    args: ["-config.file=/tmp/config/config.yml"]
+    volumeMounts:
+    - mountPath: /tmp/config
+      name: alertmanager-volume
   - name: node-exporter-container
     image: prom/node-exporter
   - name: execjson-container
     image: tnaganawa/execjson
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/bash", "-c", "/tmp/execjson/kick-alert.sh"]
   - name: applconn-container
     image: tnaganawa/applconn
   - name: open-pager-url-container
     image: tnaganawa/open-pager-url
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/bash", "-c", "/tmp/open-pager-url/kick-alert.sh"]
   - name: jupyter-it-automation-container
     image: tnaganawa/jupyter-it-automation-notebook
     command: ["/bin/bash"]
     args: ["-c", "start-notebook.sh --NotebookApp.token='' --NotebookApp.disable_check_xsrf=True"]
+  volumes:
+  - name: prometheus-volume
+    hostPath:
+      path: /var/tmp/software-defined-command-center-demo/prometheus 
+  - name: alertmanager-volume
+    hostPath:
+      path: /var/tmp/software-defined-command-center-demo/alertmanager
