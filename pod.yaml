@@ -29,20 +29,30 @@ spec:
     image: prom/node-exporter
   - name: execjson-container
     image: tnaganawa/execjson
+    imagePullPolicy: Never
     lifecycle:
       postStart:
         exec:
-          command: ["/bin/bash", "-c", "/tmp/execjson/kick-alert.sh"]
+          command: ["/bin/bash", "-c", "bash -c 'sleep 1; /tmp/execjson/kick-alert.sh' &"]
+    volumeMounts:
+    - mountPath: /tmp/execjson
+      name: execjson-volume
   - name: applconn-container
     image: tnaganawa/applconn
+    imagePullPolicy: Never
   - name: open-pager-url-container
     image: tnaganawa/open-pager-url
+    imagePullPolicy: Never
     lifecycle:
       postStart:
         exec:
-          command: ["/bin/bash", "-c", "/tmp/open-pager-url/kick-alert.sh"]
+          command: ["/bin/bash", "-c", "bash -c 'bash -c /tmp/open-pager-url/kick-alert.sh &'"]
+    volumeMounts:
+    - mountPath: /tmp/open-pager-url
+      name: open-pager-url-volume
   - name: jupyter-it-automation-container
     image: tnaganawa/jupyter-it-automation-notebook
+    imagePullPolicy: Never
     command: ["/bin/bash"]
     args: ["-c", "start-notebook.sh --NotebookApp.token='' --NotebookApp.disable_check_xsrf=True"]
   volumes:
@@ -52,3 +62,9 @@ spec:
   - name: alertmanager-volume
     hostPath:
       path: /var/tmp/software-defined-command-center-demo/alertmanager
+  - name: execjson-volume
+    hostPath:
+      path: /var/tmp/software-defined-command-center-demo/execjson 
+  - name: open-pager-url-volume
+    hostPath:
+      path: /var/tmp/software-defined-command-center-demo/open-pager-url
