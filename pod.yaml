@@ -7,13 +7,16 @@ spec:
   containers:
   - name: elasticsearch-container
     image: elasticsearch
+    imagePullPolicy: Never
   - name: kibana-container
     image: kibana
+    imagePullPolicy: Never
     env:
       - name: "ELASTICSEARCH_URL"
         value: "http://127.0.0.1:9200"
   - name: prometheus-container
     image: prom/prometheus
+    imagePullPolicy: Never
     command: ["/bin/prometheus"]
     args: ["-config.file=/tmp/config/prometheus.yml"]
     volumeMounts:
@@ -21,19 +24,17 @@ spec:
       name: prometheus-volume
   - name: alertmanager-container
     image: prom/alertmanager
+    imagePullPolicy: Never
     args: ["-config.file=/tmp/config/config.yml"]
     volumeMounts:
     - mountPath: /tmp/config
       name: alertmanager-volume
   - name: node-exporter-container
     image: prom/node-exporter
+    imagePullPolicy: Never
   - name: execjson-container
     image: tnaganawa/execjson
     imagePullPolicy: Never
-    lifecycle:
-      postStart:
-        exec:
-          command: ["/bin/bash", "-c", "bash -c 'sleep 1; /tmp/execjson/kick-alert.sh' &"]
     volumeMounts:
     - mountPath: /tmp/execjson
       name: execjson-volume
@@ -43,10 +44,6 @@ spec:
   - name: open-pager-url-container
     image: tnaganawa/open-pager-url
     imagePullPolicy: Never
-    lifecycle:
-      postStart:
-        exec:
-          command: ["/bin/bash", "-c", "bash -c 'bash -c /tmp/open-pager-url/kick-alert.sh &'"]
     volumeMounts:
     - mountPath: /tmp/open-pager-url
       name: open-pager-url-volume
@@ -55,6 +52,13 @@ spec:
     imagePullPolicy: Never
     command: ["/bin/bash"]
     args: ["-c", "start-notebook.sh --NotebookApp.token='' --NotebookApp.disable_check_xsrf=True"]
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/bash", "-c", "cp /tmp/jupyter/test-alert.ipynb /home/jovyan/work"]
+    volumeMounts:
+    - mountPath: /tmp/jupyter
+      name: jupyter-volume
   volumes:
   - name: prometheus-volume
     hostPath:
@@ -68,3 +72,6 @@ spec:
   - name: open-pager-url-volume
     hostPath:
       path: /var/tmp/software-defined-command-center-demo/open-pager-url
+  - name: jupyter-volume
+    hostPath:
+      path: /var/tmp/software-defined-command-center-demo/jupyter 
