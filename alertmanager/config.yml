@@ -101,14 +101,14 @@ receivers:
   - to: 'team-X+alerts@example.org'
 
 - name: 'team-X-pager'
-  webhook_configs:
-  - url: http://127.0.0.1:5001/alertmanager
   email_configs:
   - to: 'team-X+alerts-critical@example.org'
   pagerduty_configs:
   - service_key: <team-X-key>
 
 - name: 'team-Y-mails'
+  webhook_configs:
+  - url: http://127.0.0.1:8000/app1/alertmanager
   email_configs:
   - to: 'team-Y+alerts@example.org'
 
