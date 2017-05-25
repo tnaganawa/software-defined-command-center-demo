@@ -108,7 +108,7 @@ receivers:
 
 - name: 'team-Y-mails'
   webhook_configs:
-  - url: http://127.0.0.1:8000/app1/alertmanager
+  - url: http://127.0.0.1/app1/alertmanager
   email_configs:
   - to: 'team-Y+alerts@example.org'
 

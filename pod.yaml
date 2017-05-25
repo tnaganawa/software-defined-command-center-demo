@@ -35,18 +35,12 @@ spec:
   - name: execjson-container
     image: tnaganawa/execjson
     imagePullPolicy: Never
-    volumeMounts:
-    - mountPath: /tmp/execjson
-      name: execjson-volume
   - name: applconn-container
     image: tnaganawa/applconn
     imagePullPolicy: Never
   - name: open-pager-url-container
     image: tnaganawa/open-pager-url
     imagePullPolicy: Never
-    volumeMounts:
-    - mountPath: /tmp/open-pager-url
-      name: open-pager-url-volume
   - name: jupyter-it-automation-container
     image: tnaganawa/jupyter-it-automation-notebook
     imagePullPolicy: Never
@@ -66,12 +60,6 @@ spec:
   - name: alertmanager-volume
     hostPath:
       path: /var/tmp/software-defined-command-center-demo/alertmanager
-  - name: execjson-volume
-    hostPath:
-      path: /var/tmp/software-defined-command-center-demo/execjson 
-  - name: open-pager-url-volume
-    hostPath:
-      path: /var/tmp/software-defined-command-center-demo/open-pager-url
   - name: jupyter-volume
     hostPath:
       path: /var/tmp/software-defined-command-center-demo/jupyter 
