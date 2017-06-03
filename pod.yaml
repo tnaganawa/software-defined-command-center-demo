@@ -71,14 +71,29 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: sdcc-client-containers
+  name: sdcc-haproxy-pod
 spec:
   restartPolicy: Never 
   containers:
-  - name: fedora-ssh-container
+  - name: haproxy
     image: fedora/ssh
     imagePullPolicy: Never
     lifecycle:
       postStart:
         exec:
-          command: ["/bin/bash", "-c", "echo 'rootpass' | passwd --stdin root; true"]
+          command: ["/bin/bash", "-c", "echo 'rootpass' | passwd --stdin root"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sdcc-apache-pod
+spec:
+  restartPolicy: Never 
+  containers:
+  - name: apache
+    image: fedora/ssh
+    imagePullPolicy: Never
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/bash", "-c", "echo 'rootpass' | passwd --stdin root"]
