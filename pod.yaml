@@ -53,7 +53,7 @@ spec:
     lifecycle:
       postStart:
         exec:
-          command: ["/bin/bash", "-c", "cp /tmp/jupyter/getting-started.ipynb /home/jovyan/work"]
+          command: ["/bin/bash", "-c", "cp /tmp/jupyter/*.ipynb /home/jovyan/work"]
     volumeMounts:
     - mountPath: /tmp/jupyter
       name: jupyter-volume
