@@ -86,11 +86,11 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: sdcc-apache-pod
+  name: sdcc-httpd-pod
 spec:
   restartPolicy: Never 
   containers:
-  - name: apache
+  - name: httpd
     image: fedora/ssh
     imagePullPolicy: Never
     lifecycle:
