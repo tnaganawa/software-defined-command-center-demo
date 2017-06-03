@@ -38,6 +38,10 @@ spec:
   - name: applconn-container
     image: tnaganawa/applconn
     imagePullPolicy: Never
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/bash", "-c", "yum -y install openssh-server; /usr/sbin/sshd-keygen; /usr/sbin/sshd; echo 'rootpass' | passwd --stdin root; true"]
   - name: open-pager-url-container
     image: tnaganawa/open-pager-url
     imagePullPolicy: Never
@@ -49,7 +53,7 @@ spec:
     lifecycle:
       postStart:
         exec:
-          command: ["/bin/bash", "-c", "cp /tmp/jupyter/test-alert.ipynb /home/jovyan/work"]
+          command: ["/bin/bash", "-c", "cp /tmp/jupyter/getting-started.ipynb /home/jovyan/work"]
     volumeMounts:
     - mountPath: /tmp/jupyter
       name: jupyter-volume
@@ -63,3 +67,18 @@ spec:
   - name: jupyter-volume
     hostPath:
       path: /var/tmp/software-defined-command-center-demo/jupyter 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sdcc-client-containers
+spec:
+  restartPolicy: Never 
+  containers:
+  - name: fedora-ssh-container
+    image: fedora/ssh
+    imagePullPolicy: Never
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/bash", "-c", "echo 'rootpass' | passwd --stdin root; true"]
