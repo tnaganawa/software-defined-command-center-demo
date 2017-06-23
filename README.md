@@ -12,7 +12,7 @@ When you try this on centos7, please do
  To see containers are ok, type
  $ sudo kubectl get pod
  To see container IPs, type
- $ sudo kubectl describe pod sdcc-containers | grep IP
+ $ sudo kubectl get pod -o wide
 ````
 
 When pod is created, firstly access  
